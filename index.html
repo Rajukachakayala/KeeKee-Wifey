@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For KeeKee ❤️</title>
+  <style>
+    :root {
+      --bg1: #0b0b14;
+      --bg2: #1b0b1a;
+      --card: rgba(255,255,255,0.08);
+      --card2: rgba(255,255,255,0.12);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.75);
+      --accent: #ff4d88;
+      --accent2: #ffd1dc;
+      --glow: 0 0 25px rgba(255,77,136,0.35);
+      --radius: 18px;
+      --shadow: 0 14px 50px rgba(0,0,0,0.45);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(1200px 600px at 20% 10%, #2a1033, transparent 60%),
+                  radial-gradient(900px 500px at 80% 30%, #10224a, transparent 55%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      overflow-x: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .wrap {
+      width: min(920px, 92vw);
+      padding: 26px 0 38px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 999px;
+      box-shadow: var(--glow);
+      user-select: none;
+    }
+
+    .dot {
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 18px rgba(255,77,136,0.7);
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.45); opacity: 1; }
+    }
+
+    .time {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero {
+      padding: 28px 22px 20px;
+      background: linear-gradient(180deg, rgba(255,77,136,0.18), transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 3.4vw, 42px);
+      letter-spacing: 0.3px;
+    }
+    .sub {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .content {
+      padding: 20px 22px 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .msg {
+      background: var(--card2);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 14px 14px;
+      line-height: 1.6;
+      display: none;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: 420ms ease;
+    }
+    .msg.show {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .msg .tl {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+    .msg .en {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      color: #0c0c12;
+      background: var(--accent2);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+      transition: transform 120ms ease, filter 120ms ease;
+    }
+    button:hover { transform: translateY(-1px); filter: brightness(1.04); }
+    button:active { transform: translateY(1px); }
+
+    .ghost {
+      background: rgba(255,255,255,0.10);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: none;
+    }
+
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      color: rgba(255,255,255,0.65);
+      font-size: 12px;
+    }
+
+    /* Surprise modal */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      place-items: center;
+      padding: 18px;
+    }
+    .overlay.show { display: grid; }
+
+    .modal {
+      width: min(720px, 95vw);
+      background: rgba(15, 12, 24, 0.92);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 20px;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      overflow: hidden;
+      position: relative;
+    }
+    .modalHead {
+      padding: 18px 18px 14px;
+      background: linear-gradient(180deg, rgba(255,77,136,0.22), transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+    .modalBody {
+      padding: 16px 18px 18px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.9);
+    }
+    .modalBody b { color: #fff; }
+    .modalActions {
+      padding: 0 18px 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      font-size: 18px;
+      pointer-events: none;
+      opacity: 0.85;
+      animation: floatUp 2.6s ease-in forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.0; }
+      10% { opacity: 0.9; }
+      100% { transform: translateY(-140px) scale(1.35); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="badge">
+        <span class="dot"></span>
+        <span><b>Valentine Surprise</b> • For <span id="name">KeeKee</span> ❤️</span>
+      </div>
+      <div class="time" id="time">--:--:--</div>
+    </div>
+
+    <div class="card">
+      <div class="hero">
+        <h1>Hey KeeKee… 💖</h1>
+        <p class="sub">
+          Ee chinna website oka chinna magic. Step by step open avuthundi.  
+          <br/>Ready aa? (No pressure, but… yes pressure 😄)
+        </p>
+        <div class="actions">
+          <button id="startBtn">Start the Surprise ✨</button>
+          <button class="ghost" id="musicBtn">Tiny Vibe: ON/OFF 🎶</button>
+        </div>
+      </div>
+
+      <div class="content" id="content">
+        <div class="msg" id="m1">
+          <div class="tl">1) <b>నీ నవ్వు</b> అంటే నాకు peaceful place.</div>
+          <div class="en">Your smile is my calmest place.</div>
+        </div>
+
+        <div class="msg" id="m2">
+          <div class="tl">2) Nenu strong ani anukuntaru… but <b>నీ దగ్గర</b> soft aipothanu.</div>
+          <div class="en">I act tough, but with you I melt.</div>
+        </div>
+
+        <div class="msg" id="m3">
+          <div class="tl">3) Manam Telugu people kabatti: <b>“Nuvvu naa praanam”</b> — simple. final.</div>
+          <div class="en">Classic Telugu line. Still undefeated.</div>
+        </div>
+
+        <div class="msg" id="m4">
+          <div class="tl">4) Nee kosam oka promise: <b>respect</b>, <b>care</b>, <b>and full comedy support</b> 😄</div>
+          <div class="en">Respect + care + lifetime laughter subscription.</div>
+        </div>
+
+        <div class="msg" id="m5">
+          <div class="tl">5) Last step… click the final button. <b>Big reveal</b> incoming.</div>
+          <div class="en">Okay okay, dramatic finale time.</div>
+        </div>
+
+        <div class="actions">
+          <button id="nextBtn" class="ghost" disabled>Next 💌</button>
+          <button id="finalBtn" disabled>Final Surprise 💘</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Tip: You can edit the Telugu lines in the code to match your story. (But this version is already certified cute.)
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modalHead">
+        <h2 style="margin:0;">KeeKee ❤️</h2>
+        <div style="color: rgba(255,255,255,0.75); margin-top:6px;">
+          Oka chinna question… but big meaning.
+        </div>
+      </div>
+      <div class="modalBody" id="modalBody">
+        <div style="font-size: 18px;">
+          <b>Will you be my forever Valentine?</b> 💍✨
+        </div>
+        <div style="margin-top:10px;">
+          Telugu lo cheppali ante: <b>“Ee janma… next janma… anni janmalu… nuvve.”</b>
+        </div>
+        <div style="margin-top:10px; color: rgba(255,255,255,0.78);">
+          (P.S: Nee answer “Yes” ayithe… next screen lo secret message untundi 😄)
+        </div>
+      </div>
+      <div class="modalActions">
+        <button id="yesBtn">Yes 😍</button>
+        <button id="noBtn" class="ghost">No 🙈</button>
+        <button id="closeBtn" class="ghost">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgm" loop>
+    <!-- Tiny built-in tone; no external files needed -->
+  </audio>
+
+  <script>
+    // ====== Customize her name here if you want ======
+    const herName = "KeeKee"; // change if needed
+    document.getElementById("name").textContent = herName;
+
+    // ====== Clock ======
+    const timeEl = document.getElementById("time");
+    setInterval(() => {
+      const d = new Date();
+      timeEl.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+    }, 250);
+
+    // ====== Messages reveal logic ======
+    const msgs = ["m1","m2","m3","m4","m5"].map(id => document.getElementById(id));
+    let idx = -1;
+
+    const startBtn = document.getElementById("startBtn");
+    const nextBtn  = document.getElementById("nextBtn");
+    const finalBtn = document.getElementById("finalBtn");
+
+    function showNext() {
+      idx++;
+      if (idx < msgs.length) {
+        msgs[idx].classList.add("show");
+        spawnHearts(10);
+      }
+      nextBtn.disabled = idx >= msgs.length - 1;
+      finalBtn.disabled = idx < msgs.length - 1;
+    }
+
+    startBtn.addEventListener("click", () => {
+      if (idx === -1) {
+        nextBtn.disabled = false;
+        showNext();
+        startBtn.textContent = "Surprise Started ✅";
+        startBtn.disabled = true;
+      }
+    });
+
+    nextBtn.addEventListener("click", showNext);
+
+    // ====== Final modal ======
+    const overlay = document.getElementById("overlay");
+    const final = () => {
+      overlay.classList.add("show");
+      spawnHearts(25);
+    };
+    finalBtn.addEventListener("click", final);
+
+    // ====== Cute “No” button behavior (harmless trolling) ======
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalBody = document.getElementById("modalBody");
+
+    yesBtn.addEventListener("click", () => {
+      modalBody.innerHTML = `
+        <div style="font-size: 20px;"><b>Yayyyy 😭❤️</b></div>
+        <div style="margin-top:10px;">
+          Telugu lo: <b>“Naa life lo best decision… nuvvu.”</b>
+        </div>
+        <div style="margin-top:10px; color: rgba(255,255,255,0.80);">
+          Now screenshot this and send it back to me 😄
+        </div>
+      `;
+      spawnHearts(40);
+    });
+
+    noBtn.addEventListener("mouseenter", () => {
+      // runs away a bit
+      const x = Math.random() * 220 - 110;
+      const y = Math.random() * 140 - 70;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    closeBtn.addEventListener("click", () => overlay.classList.remove("show"));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.classList.remove("show");
+    });
+
+    // ====== Floating hearts ======
+    function spawnHearts(count = 8) {
+      const hearts = ["💖","💘","💝","❤️","💕","✨"];
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement("div");
+        el.className = "heart";
+        el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+        el.style.left = (Math.random() * 100) + "vw";
+        el.style.top  = (70 + Math.random() * 25) + "vh";
+        el.style.fontSize = (14 + Math.random()*18) + "px";
+        el.style.animationDuration = (2.0 + Math.random()*1.2) + "s";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3200);
+      }
+    }
+
+    // ====== Tiny vibe music (WebAudio) ======
+    let audioOn = false;
+    let ctx, osc, gain;
+
+    function startTone() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      osc = ctx.createOscillator();
+      gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = 528; // “love-ish” vibe tone (just a pleasant frequency)
+      gain.gain.value = 0.02; // very low volume
+      osc.connect(gain).connect(ctx.destination);
+      osc.start();
+    }
+    function stopTone() {
+      try { osc.stop(); } catch {}
+      try { ctx.close(); } catch {}
+      ctx = osc = gain = null;
+    }
+
+    document.getElementById("musicBtn").addEventListener("click", async () => {
+      audioOn = !audioOn;
+      if (audioOn) {
+        startTone();
+        spawnHearts(12);
+      } else {
+        stopTone();
+      }
+    });
+  </script>
+</body>
+</html>
